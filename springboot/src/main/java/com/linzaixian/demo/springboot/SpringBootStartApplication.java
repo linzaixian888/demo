@@ -4,6 +4,7 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
 
 /**
+ * springboot打成war包需要用到此类启动
  * @author linzaixian
  * @since 2017-06-30 16:21:01 
  */

@@ -9,6 +9,9 @@
   	<module>springboot</module>
   	<module>assembly</module>
   	<module>dubbo</module>
+  	<module>spring-cloud</module>
+  	<module>springcloud</module>
+  	<module>elastic-job-lite</module>
   </modules>
   <build>
         <plugins>
