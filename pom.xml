@@ -19,6 +19,7 @@
 		<module>thread</module>
 		<module>jsckson</module>
 		<module>junit</module>
+		<module>joda-time</module>
 	</modules>
 	<dependencies>
 		<dependency>
@@ -30,7 +31,6 @@
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-classic</artifactId>
 			<version>1.2.3</version>
-			<scope>test</scope>
 		</dependency>
 	</dependencies>
 	<build>

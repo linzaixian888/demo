@@ -1,41 +1,30 @@
 package com.linzaixian.demo.pattern;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.HashMap;
+import java.util.Map;
+
+import ognl.Ognl;
+import ognl.OgnlContext;
+import ognl.OgnlException;
+
 /**
- * 
- * <pre>
- * TODO。
- * </pre>
- *
- * @author foresee@foresee.com.cn
- * @date 2017年12月20日
- * @version 1.00.00
- * 
- *          <pre>
- * 修改记录 
- *    修改后版本:     修改人：  修改日期:     修改内容:
- *          </pre>
+ * @author linzaixian
+ * @since 2017-09-07 23:15:31 
  */
 public class Main {
-	private static String  regex="\\$\\{[A-Za-z]+\\}";
-	public static void main(String[] args) {
-		String str = "${a}{b}";
-		System.out.println(getParamName(str));
-	}
-	
-	public static Set<String> getParamName(String str) {
-		Pattern pattern = Pattern.compile(regex);
-		Matcher matcher = pattern.matcher(str);
-		Set<String> set=new HashSet<String>();
-		 while(matcher.find()) {
-			 String findOne=matcher.group();
-			  set.add(findOne.substring(2, findOne.length()-1));
-		   }
-		return set;
-		
-	}
-	
+    public static void main(String[] args) throws Exception {
+        OgnlContext context=new OgnlContext(new HashMap<>(23));
+        Map person=new HashMap<>();
+        person.put("name", "名字");
+        Map dog=new HashMap<>();
+        dog.put("name", "小狗");
+        person.put("dog", dog);
+        context.put("person", person);
+        context.setRoot(person);
+        System.out.println(Ognl.getValue("name", context,context.getRoot()));
+        System.out.println(Ognl.getValue("dog", context,context.getRoot()));
+       System.out.println(Ognl.getValue("#person.name", context,context.getRoot()));
+       System.out.println(Ognl.getValue("#person.dog.name", context,context.getRoot()));
+       
+    }
 }
