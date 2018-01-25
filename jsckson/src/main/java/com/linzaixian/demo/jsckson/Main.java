@@ -67,6 +67,8 @@ public class Main {
 		bean.setCreateTime(now);
 		bean.setUpdateTime(now);
 		Map map=objectMapper.convertValue(bean, Map.class);
+		System.out.println(map.get("createTime").getClass());
+		System.out.println(map.get("updateTime").getClass());
 		System.out.println(map);
 	}
 	private static void mapToBean() throws Exception {

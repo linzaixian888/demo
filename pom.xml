@@ -20,6 +20,7 @@
 		<module>jsckson</module>
 		<module>junit</module>
 		<module>joda-time</module>
+		<module>guava</module>
 	</modules>
 	<dependencies>
 		<dependency>

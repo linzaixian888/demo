@@ -30,6 +30,7 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.reindex.DeleteByQueryAction;
 import org.elasticsearch.index.reindex.DeleteByQueryRequestBuilder;
 import org.elasticsearch.index.reindex.UpdateByQueryAction;
+import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.transport.client.PreBuiltTransportClient;
 
@@ -51,20 +52,21 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  */
 
 public class Main {
-	private static final String INDEX = "notice";
+	private static final String INDEX = "notice_test";
 	private static final String TYPE = "detail";
 	private static final String HOST = "10.10.0.204";
 	private static final int PORT = 9300;
 	private  static SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	private static Date now=new Date();
 
 	public static void main(String[] args) throws Exception {
-		insert();
-		insertMap();
-		insertBean();
-		insertBean2();
-		insertBatch();
-		deleteByCondition();
-		queryById();
+//		insert();
+//		insertMap();
+//		insertBean();
+//		insertBean2();
+//		insertBatch();
+//		deleteByCondition();
+//		queryById();
 		queryQuery();
 		
 	}
@@ -96,6 +98,7 @@ public class Main {
 	private static void insertMap() throws Exception {
 		Map map=new HashMap<>();
 		map.put("name", "名字2");
+		map.put("createTime", sdf.format(now));
 		TransportClient client=getTransportClient();
     	IndexResponse  response=client.prepareIndex(INDEX, TYPE,"2")
 								      .setSource( map)  
@@ -106,6 +109,7 @@ public class Main {
 	private static void insertBean()throws Exception{
 		EsDto dto=new EsDto();
 		dto.setName("名字3");
+		dto.setCreateTime(now);
 		Map map = PropertyUtils.describe(dto);
 		map.remove("class");
 		TransportClient client=getTransportClient();
@@ -119,6 +123,7 @@ public class Main {
 	private static void insertBean2()throws Exception{
 		EsDto dto=new EsDto();
 		dto.setName("名字4");
+		dto.setCreateTime(now);
 		ObjectMapper objectMapper=new ObjectMapper();
 		Map map=objectMapper.convertValue(dto, Map.class);
 		TransportClient client=getTransportClient();
@@ -163,16 +168,19 @@ public class Main {
 		BoolQueryBuilder queryBuilder = QueryBuilders.boolQuery();
 		//与
 		queryBuilder.must(QueryBuilders.wildcardQuery("name", "名字*"));//模糊查询
-		queryBuilder.must(QueryBuilders.termQuery("id", 3));//精确查询
-		Date begin=sdf.parse("2017-11-21 11:00:00");
-    	Date end=sdf.parse("2017-11-21 13:00:00");
+//		queryBuilder.must(QueryBuilders.termQuery("id", 4));//精确查询
+		Date begin=sdf.parse("2018-01-25 18:34:22");
+    	Date end=sdf.parse("2018-01-25 18:34:22");
     	//时间范围查询
-    	queryBuilder.must(QueryBuilders.rangeQuery("time").gt(begin.getTime()).lt(end.getTime()));
+    	queryBuilder.must(QueryBuilders.rangeQuery("createTime").gte(begin.getTime()).lte(end.getTime()));
 		//--------------------------------------------------
 		//或
-		queryBuilder.must(QueryBuilders.wildcardQuery("name", "名字*"));
-		queryBuilder.should(QueryBuilders.termQuery("id", 3));
+		queryBuilder.should(QueryBuilders.wildcardQuery("name", "名字*"));
+		queryBuilder.should(QueryBuilders.termQuery("id", 1));
 		queryBuilder.minimumShouldMatch(1);//should的条件至少有一个满足;
+		//--------------------------------------------------
+		//不满足 not
+		queryBuilder.mustNot(QueryBuilders.wildcardQuery("name", "姓氏*"));
 		handleQueryResult(client, queryBuilder);
 	}
 	
@@ -184,6 +192,9 @@ public class Main {
 	private static void handleQueryResult(SearchRequestBuilder searchRequestBuilder) {
 		SearchResponse response = searchRequestBuilder.execute().actionGet();
 		System.out.println(response.toString());
+		for(SearchHit hit:response.getHits()) {
+			System.out.println(hit.getSourceAsString());
+		}
 	}
 
 	private static TransportClient getTransportClient() throws UnknownHostException {
