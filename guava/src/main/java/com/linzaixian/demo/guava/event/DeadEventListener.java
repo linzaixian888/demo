@@ -28,7 +28,7 @@ public class DeadEventListener {
 	private static final  Logger logger=LoggerFactory.getLogger(DeadEventListener.class);
 	@Subscribe
 	public void listen(DeadEvent event) {
-		logger.debug("{}",event);
+		logger.warn("{}",event);
 	}
 
 }

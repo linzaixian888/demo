@@ -3,6 +3,9 @@
  */
 package com.linzaixian.demo.guava;
 
+import java.util.concurrent.Executors;
+
+import com.google.common.eventbus.AsyncEventBus;
 import com.google.common.eventbus.EventBus;
 import com.linzaixian.demo.guava.event.AEventListener;
 import com.linzaixian.demo.guava.event.BEventListener;
@@ -11,7 +14,7 @@ import com.linzaixian.demo.guava.event.MyEvent;
 
 /**
  * <pre>
- * TODO。
+ * 事件总线
  * </pre>
  *
  * @author linzaixian@foresee.com.cn
@@ -28,9 +31,11 @@ public class EventBusDemo {
 	public static void main(String[] args) {
 		MyEvent event=new MyEvent("自定义消息");
 		EventBus eventBus=new EventBus();
-		eventBus.register(new AEventListener());
+//		EventBus eventBus=new AsyncEventBus(Executors.newFixedThreadPool(3));
 		eventBus.register(new BEventListener());
+		eventBus.register(new AEventListener());
 		eventBus.register(new DeadEventListener());
+		
 		eventBus.post(event);
 		eventBus.post("这是一条没人消费的DeadEvent消息，");
 	}
