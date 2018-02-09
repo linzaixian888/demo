@@ -1,4 +1,4 @@
-package com.linzaixian.demo.pattern;
+package com.linzaixian.demo.ognl;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -20,11 +20,16 @@ public class Main {
         dog.put("name", "小狗");
         person.put("dog", dog);
         context.put("person", person);
+        Bean bean=new Bean();
+        bean.setName("test");
+        context.put("bean", bean);
         context.setRoot(person);
         System.out.println(Ognl.getValue("name", context,context.getRoot()));
         System.out.println(Ognl.getValue("dog", context,context.getRoot()));
        System.out.println(Ognl.getValue("#person.name", context,context.getRoot()));
        System.out.println(Ognl.getValue("#person.dog.name", context,context.getRoot()));
+       System.out.println(Ognl.getValue("#bean.test()", context,context.getRoot()));
+       
        
     }
 }

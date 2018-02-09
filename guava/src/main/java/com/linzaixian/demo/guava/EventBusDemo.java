@@ -37,6 +37,6 @@ public class EventBusDemo {
 		eventBus.register(new DeadEventListener());
 		
 		eventBus.post(event);
-		eventBus.post("这是一条没人消费的DeadEvent消息，");
+		eventBus.post("这是一条没人消费的DeadEvent消息");
 	}
 }
