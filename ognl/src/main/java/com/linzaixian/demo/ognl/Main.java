@@ -1,5 +1,6 @@
 package com.linzaixian.demo.ognl;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,7 +30,5 @@ public class Main {
        System.out.println(Ognl.getValue("#person.name", context,context.getRoot()));
        System.out.println(Ognl.getValue("#person.dog.name", context,context.getRoot()));
        System.out.println(Ognl.getValue("#bean.test()", context,context.getRoot()));
-       
-       
     }
 }

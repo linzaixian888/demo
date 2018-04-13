@@ -7,9 +7,9 @@ import java.util.Date;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 /**
  * <pre>
@@ -32,6 +32,8 @@ public class Bean {
 	@JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date createTime;
 	private Date updateTime;
+	@JsonDeserialize(using=JsonDateDeserialize.class)
+	private Date time;
 	private Long cardNo;
 	private Boolean exist;
 	private List<String> childs;
@@ -77,10 +79,17 @@ public class Bean {
 	public void setUpdateTime(Date updateTime) {
 		this.updateTime = updateTime;
 	}
+	public Date getTime() {
+		return time;
+	}
+	public void setTime(Date time) {
+		this.time = time;
+	}
 	@Override
 	public String toString() {
 		return "Bean [id=" + id + ", name=" + name + ", createTime=" + createTime + ", updateTime=" + updateTime
-				+ ", cardNo=" + cardNo + ", exist=" + exist + ", childs=" + childs + "]";
+				+ ", time=" + time + ", cardNo=" + cardNo + ", exist=" + exist + ", childs=" + childs + "]";
 	}
+	
 	
 }

@@ -28,10 +28,8 @@ import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.reindex.DeleteByQueryAction;
-import org.elasticsearch.index.reindex.DeleteByQueryRequestBuilder;
-import org.elasticsearch.index.reindex.UpdateByQueryAction;
 import org.elasticsearch.search.SearchHit;
-import org.elasticsearch.search.aggregations.AggregationBuilders;
+import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
 import org.elasticsearch.transport.client.PreBuiltTransportClient;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -67,7 +65,8 @@ public class Main {
 //		insertBatch();
 //		deleteByCondition();
 //		queryById();
-		queryQuery();
+//		queryQuery();
+		queryIndexPattern();
 		
 	}
 	
@@ -183,20 +182,32 @@ public class Main {
 		queryBuilder.mustNot(QueryBuilders.wildcardQuery("name", "姓氏*"));
 		handleQueryResult(client, queryBuilder);
 	}
+	private static void  queryIndexPattern() throws Exception{
+		TransportClient client=getTransportClient();
+		BoolQueryBuilder queryBuilder = QueryBuilders.boolQuery();
+		SearchRequestBuilder searchRequestBuilder=client.prepareSearch("logstash-gw-gwlog*");
+		queryBuilder.must(QueryBuilders.matchQuery("url", "TrainingService"));
+		searchRequestBuilder.setQuery(queryBuilder);
+		HighlightBuilder highlightBuilder=new HighlightBuilder();
+		highlightBuilder.field("url").field("output").preTags("<em style='color:red'>").postTags("</em>").fragmentSize(250);  
+		searchRequestBuilder.highlighter(highlightBuilder);
+		handleQueryResult(searchRequestBuilder);
+	}
+
 	
 	private static void handleQueryResult(TransportClient client,QueryBuilder queryBuilder) {
 		SearchRequestBuilder builder = client.prepareSearch(INDEX).setTypes(TYPE).setQuery(queryBuilder);
-		System.out.println(builder.toString());
 		handleQueryResult(builder);
 	}
 	private static void handleQueryResult(SearchRequestBuilder searchRequestBuilder) {
+		System.out.println(searchRequestBuilder.toString());
 		SearchResponse response = searchRequestBuilder.execute().actionGet();
 		System.out.println(response.toString());
 		for(SearchHit hit:response.getHits()) {
 			System.out.println(hit.getSourceAsString());
 		}
 	}
-
+	
 	private static TransportClient getTransportClient() throws UnknownHostException {
 		Settings setting = Settings.builder().put("cluster.name", "elk")// 指定集群名称
 				.put("client.transport.sniff", true)// 启动嗅探功能

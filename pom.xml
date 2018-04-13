@@ -21,6 +21,8 @@
 		<module>junit</module>
 		<module>joda-time</module>
 		<module>guava</module>
+		<module>lambda</module>
+		<module>spring-redis</module>
 	</modules>
 	<dependencies>
 		<dependency>

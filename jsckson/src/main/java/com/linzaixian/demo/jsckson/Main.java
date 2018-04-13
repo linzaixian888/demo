@@ -38,6 +38,7 @@ public class Main {
 		beanToJson();
 		beanToMap();
 		mapToBean();
+		jsonToBean();
 	}
 	private static void setSetting() {
 		//null属性不进行序列化
@@ -78,5 +79,11 @@ public class Main {
 		map.put("updateTime", now);
 		Bean bean=objectMapper.convertValue(map, Bean.class);
 		System.out.println(bean);
+	}
+	private static void jsonToBean () throws Exception {
+		String json="{\"createTime\":1523605208105,\"name\":\"名字\",\"updateTime\":1523605208105,\"time\":\"2018-01-02 00:00:10\"}";
+		Bean bean=objectMapper.readValue(json, Bean.class);
+		System.out.println(bean);
+		
 	}
 }
