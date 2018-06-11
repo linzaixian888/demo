@@ -13,7 +13,7 @@ public class TestServiceHystrix implements TestService{
 
     @Override
     public String test(String name) {
-        return "sorry "+name;
+        return "sorry 报错了"+name;
     }
 
 }

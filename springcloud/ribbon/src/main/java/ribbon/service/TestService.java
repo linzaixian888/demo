@@ -16,9 +16,9 @@ public class TestService {
     RestTemplate restTemplate;
     @HystrixCommand(fallbackMethod="testError")
     public String test(String name) {
-        return restTemplate.getForObject("http://CLIENT/test?name="+name,String.class);
+        return restTemplate.getForObject("http://client/test?name="+name,String.class);
     }
     public String testError(String name){
-        return "sorry "+name;
+        return "sorry 报错了 "+name;
     }
 }
