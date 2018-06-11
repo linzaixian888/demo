@@ -15,7 +15,7 @@
         <!-- <property name="password" value="${spring.redis.password}" /> -->
 	</bean>
 	<bean id="stringRedisSerializers" class="org.springframework.data.redis.serializer.StringRedisSerializer"></bean>
-	<bean class="redis.clients.jedis.JedisPoolConfig">
+	<bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
 		<property name="maxIdle" value="${spring.redis.pool.max-idle}"></property>
 		<property name="minIdle" value="${spring.redis.pool.min-idle}"></property>
 		<property name="maxTotal" value="${spring.redis.pool.max-active}"></property>
@@ -27,7 +27,7 @@
     </bean>
 
 	<!-- redis template definition -->
-	<bean id="redisTemplate2" class="org.springframework.data.redis.core.RedisTemplate">
+	<bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate">
 		<property name="defaultSerializer" ref="stringRedisSerializers"></property>
 		<property name="connectionFactory" ref="jedisConnectionFactory"></property>
 	</bean>
