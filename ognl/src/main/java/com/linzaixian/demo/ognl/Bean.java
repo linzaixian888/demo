@@ -37,4 +37,10 @@ public class Bean {
 		System.out.println(name);
 		System.out.println("---end---");
 	}
+	public String test(String name) {
+		System.out.println("---begin---");
+		System.out.println(name);
+		System.out.println("---end---");
+		return name;
+	}
 }

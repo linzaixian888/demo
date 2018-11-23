@@ -34,11 +34,11 @@ public class Main {
 	private static final ObjectMapper objectMapper=new ObjectMapper();
 	private static final Date now=new Date();
 	public static void main(String[] args) throws Exception {
-		mapToJson();
-		beanToJson();
+//		mapToJson();
+//		beanToJson();
 		beanToMap();
-		mapToBean();
-		jsonToBean();
+//		mapToBean();
+//		jsonToBean();
 	}
 	private static void setSetting() {
 		//null属性不进行序列化

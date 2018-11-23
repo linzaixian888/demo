@@ -11,7 +11,7 @@ import feign.hystrix.TestServiceHystrix;
  * @author linzaixian
  * @since 2017-07-27 22:14:44 
  */
-@FeignClient(value="client",fallback=TestServiceHystrix.class)
+@FeignClient(value="module2",fallback=TestServiceHystrix.class)
 public interface TestService {
     @RequestMapping(value = "/test",method = RequestMethod.GET)
     String test(@RequestParam(value = "name") String name);
