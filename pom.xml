@@ -23,6 +23,7 @@
 		<module>guava</module>
 		<module>lambda</module>
 		<module>spring-redis</module>
+		<module>decrypt-heidisql</module>
 	</modules>
 	<dependencies>
 		<dependency>
